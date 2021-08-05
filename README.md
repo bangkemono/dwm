@@ -2,11 +2,11 @@
 ![dwm](https://github.com/bangkemono/dwm/blob/master/dwm.png)
 
 ## Keybinds
-since this is a suckless program, all of my keybinds are located at config.h
-edit it to suit your liking
+since this is a suckless program, all of my keybinds are located at config.h<br>
+edit it to suit your liking (well, it is yours once you clone it)
 
 ## Patches
-* None at the moment
+* dwm-statusallmons (6.2)
 
 ## Installation
 ```bash
