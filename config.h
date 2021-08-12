@@ -8,15 +8,14 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Iosevka Nerd Font:size=10:antialias=true" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_blackish[]       = "#222222";
+static const char col_blackish[]       = "#252525";
 static const char col_border[]       = "#444444";
 static const char col_white[]        = "#fbefeb";
-static const char col_pale[]        = "#fcdcd5";
-static const char col_xantofil[]        = "#ffa700";
+static const char col_green[]        = "#52FF9D";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_blackish, col_white, col_border }, /* Unselected */
-	[SchemeSel]  = { col_blackish, col_pale,  col_xantofil  }, /*  Selected  */
+	[SchemeNorm] = { col_white, col_blackish, col_border }, /* Unselected */
+	[SchemeSel]  = { col_blackish, col_green,  col_green  }, /*  Selected  */
 };
 
 /* tagging */
@@ -76,7 +75,7 @@ static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "togg
 static const char *brightup[]   = { "light", "-A", "10",     NULL };
 static const char *brightlow[] = { "light", "-U", "10",     NULL };
 
-static const char *roficmd[] = { "rofi", "-show", "drun", "-font", "Iosevka Nerd Font 12", "-theme", "suwa", "-show-icons", NULL }; // use rofi instead
+static const char *roficmd[] = { "rofi", "-show", "drun", "-font", "Iosevka Nerd Font 12", "-theme", "sucrose", "-show-icons", NULL }; // use rofi instead
 static const char *termcmd[]  = { "xterm", NULL }; // set xterm as default terminal
 
 static Key keys[] = {
