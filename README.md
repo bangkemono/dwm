@@ -7,6 +7,7 @@ edit it to suit your liking (well, it is yours once you clone it)
 
 ## Patches
 * dwm-statusallmons (6.2)
+* dwm-vanitygaps (6.2)
 
 ## Installation
 ```bash
