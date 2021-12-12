@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -10,17 +10,17 @@ static const unsigned int gappoh    = 10;       /* horiz outer gap between windo
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
+static const int topbar             = 0;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Iosevka Nerd Font:size=10:antialias=true" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_blackish[]       = "#252525";
-static const char col_border[]       = "#444444";
-static const char col_white[]        = "#fbefeb";
-static const char col_green[]        = "#52FF9D";
+static const char col_blackish[]    = "#252525";
+static const char col_border[]      = "#444444";
+static const char col_white[]       = "#fbefeb";
+static const char col_pinky[]       = "#e0c2c2";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_white, col_blackish, col_border }, /* Unselected */
-	[SchemeSel]  = { col_blackish, col_green,  col_green  }, /*  Selected  */
+	[SchemeSel]  = { col_blackish, col_white,  col_pinky  }, /*  Selected  */
 };
 
 /* tagging */
@@ -31,17 +31,17 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Firefox",             NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "Brave-browser",       NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "discord",             NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "retroarch",           NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "Steam",               NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "obs",                 NULL,       NULL,       1 << 4,       0,           -1 },
-	{ "mpv",                 NULL,       NULL,       1 << 4,       0,           -1 },
-	{ "Zathura",             NULL,       NULL,       1 << 5,       0,           -1 },
-	{ "VirtualBox Manager",  NULL,       NULL,       1 << 6,       0,           -1 },
-	{ "VirtualBoxVM",        NULL,       NULL,       1 << 7,       0,           -1 },
+	/* class                  instance    title       tags mask     isfloating   monitor */
+	{ "processing-app-Base",  NULL,       NULL,            0,       1,           -1 },
+	{ "Brave-browser",        NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "discord",              NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "retroarch",            NULL,       NULL,       1 << 3,       0,           -1 },
+	{ "Steam",                NULL,       NULL,       1 << 3,       0,           -1 },
+	{ "obs",                  NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "mpv",                  NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "Zathura",              NULL,       NULL,       1 << 5,       0,           -1 },
+	{ "VirtualBox Manager",   NULL,       NULL,       1 << 6,       0,           -1 },
+	{ "VirtualBoxVM",         NULL,       NULL,       1 << 7,       0,           -1 },
 };
 
 /* layout(s) */
@@ -68,27 +68,16 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-/* commands */
-
-/*static char dmenumon[2] = "0"; [> component of dmenucmd, manipulated in spawn() <]
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_blackish, "-nf", col_border, "-sb", col_white, "-sf", col_blackish, NULL }; */
-
-/* use pulse */
-//static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
-//static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
-//static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
-
-/* use alsa */
+/* alsa binds */
 static const char *upvol[]   = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mutevol[] = { "amixer", "-q", "set", "Master", "toggle", NULL };
 
-
 //static const char *brightup[]   = { "light", "-A", "10",     NULL };
 //static const char *brightlow[] = { "light", "-U", "10",     NULL };
 
-static const char *roficmd[] = { "rofi", "-show", "drun", "-font", "Iosevka Nerd Font 12", "-theme", "sucrose", "-show-icons", NULL }; // use rofi instead
-static const char *termcmd[]  = { "xterm", NULL }; // set xterm as default terminal
+static const char *roficmd[] = { "rofi", "-show", "drun", "-font", "Iosevka Nerd Font 12", "-theme", "roboco", "-show-icons", NULL }; // use rofi instead
+static const char *termcmd[]  = { "st", NULL }; // set xterm as default terminal
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -130,6 +119,10 @@ static Key keys[] = {
     { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+    { MODKEY|ShiftMask,             XK_p,      spawn,          SHCMD("~/.config/rofi/r_popt.sh") }, // use rofi powermenu instead of original dwm exit
+    { MODKEY|ShiftMask,             XK_j,      pushdown,       {0} },
+    { MODKEY|ShiftMask,             XK_k,      pushup,         {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -139,20 +132,12 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-    { MODKEY|ShiftMask,             XK_p,      spawn,          SHCMD("~/.config/rofi/r_popt.sh") }, // use rofi powermenu instead of original dwm exit
 
     // Alsa settings
 
     { 0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
 	{ 0,                       XF86XK_AudioMute, spawn, {.v = mutevol } },
 	{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol   } },
-
-    // Pulseaudio settings
-
-    //{ 0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
-	//{ 0,                       XF86XK_AudioMute, spawn, {.v = mutevol } },
-	//{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol   } },
 
     // Brightness settings (LAPTOP)
 
