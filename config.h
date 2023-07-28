@@ -10,17 +10,19 @@ static const unsigned int gappoh    = 10;       /* horiz outer gap between windo
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Iosevka Nerd Font:size=10:antialias=true" };
+static const int topbar             = 1;        /* 0 means bottom bar */
+static const char *fonts[]          = { "BigBlueTerm437 Nerd Font:size=9:antialias=true", "Iosevka Nerd Font:size=10:antialias=true" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_blackish[]    = "#252525";
 static const char col_border[]      = "#444444";
 static const char col_white[]       = "#fbefeb";
+static const char col_green[]       = "#52ff9d";
+static const char col_purple[]      = "#c3aad1";
 static const char col_pinky[]       = "#e0c2c2";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_white, col_blackish, col_border }, /* Unselected */
-	[SchemeSel]  = { col_blackish, col_white,  col_pinky  }, /*  Selected  */
+	[SchemeSel]  = { col_blackish, col_purple,  col_purple }, /*  Selected  */
 };
 
 /* tagging */
@@ -33,7 +35,7 @@ static const Rule rules[] = {
 	 */
 	/* class                  instance    title       tags mask     isfloating   monitor */
 	{ "processing-app-Base",  NULL,       NULL,            0,       1,           -1 },
-	{ "Brave-browser",        NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "firefox",	          NULL,       NULL,       1 << 1,       0,           -1 },
 	{ "discord",              NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "retroarch",            NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Steam",                NULL,       NULL,       1 << 3,       0,           -1 },
@@ -73,11 +75,11 @@ static const char *upvol[]   = { "amixer", "-q", "set", "Master", "5%+", "unmute
 static const char *downvol[] = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mutevol[] = { "amixer", "-q", "set", "Master", "toggle", NULL };
 
-//static const char *brightup[]   = { "light", "-A", "10",     NULL };
-//static const char *brightlow[] = { "light", "-U", "10",     NULL };
+static const char *brightup[]   = { "light", "-A", "2",     NULL };
+static const char *brightlow[] = { "light", "-U", "2",     NULL };
 
-static const char *roficmd[] = { "rofi", "-show", "drun", "-font", "Iosevka Nerd Font 12", "-theme", "roboco", "-show-icons", NULL }; // use rofi instead
-static const char *termcmd[]  = { "st", NULL }; // set xterm as default terminal
+static const char *roficmd[] = { "rofi", "-show", "drun", "-font", "BigBlueTerm437 Nerd Font 9", "-theme", "laplus", "-show-icons", NULL }; // use rofi instead
+static const char *termcmd[]  = { "xterm", NULL }; // set xterm as default terminal
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -114,6 +116,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
     { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
     { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
     { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
@@ -141,10 +144,10 @@ static Key keys[] = {
 
     // Brightness settings (LAPTOP)
 
-    //{ 0,                       XF86XK_MonBrightnessUp,   spawn, {.v = brightup } },
-	//{ 0,                       XF86XK_MonBrightnessDown, spawn, {.v = brightlow } },
-    //{ MODKEY,                  XK_Up,                    spawn, {.v = brightup } },
-	//{ MODKEY,                  XK_Down,                  spawn, {.v = brightlow } },
+    { 0,                       XF86XK_MonBrightnessUp,   spawn, {.v = brightup } },
+    { 0,                       XF86XK_MonBrightnessDown, spawn, {.v = brightlow } },
+    { MODKEY,                  XK_Up,                    spawn, {.v = brightup } },
+    { MODKEY,                  XK_Down,                  spawn, {.v = brightlow } },
 };
 
 /* button definitions */
